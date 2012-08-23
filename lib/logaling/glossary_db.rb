@@ -106,9 +106,9 @@ module Logaling
       create_terms if offline_index?
     end
 
-    def lookup(source_term, glossary=nil)
+    def lookup(source_term, glossary=nil, just_match=false)
       records_selected = Groonga["translations"].select do |record|
-        conditions = [record.source_term =~ source_term]
+        conditions = just_match ? [record.source_term == source_term] : [record.source_term =~ source_term]
         if glossary
           conditions << (record.source_language =~ glossary.source_language) if glossary.source_language
           conditions << (record.target_language =~ glossary.target_language) if glossary.target_language
