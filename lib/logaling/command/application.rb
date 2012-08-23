@@ -263,6 +263,7 @@ module Logaling::Command
     method_option "no-pager", type: :boolean, default: false
     method_option "no-color", type: :boolean, default: false
     method_option "dictionary", type: :boolean, default: false, aliases: "--dict"
+    method_option "just-match", type: :boolean, default: false
     def lookup(source_term)
       check_logaling_home_exists
       @repository.index
@@ -273,7 +274,7 @@ module Logaling::Command
       else
         glossary = nil
       end
-      terms = @repository.lookup(source_term, glossary, options["dictionary"])
+      terms = @repository.lookup(source_term, glossary, options["dictionary"], options["just-match"])
       unless terms.empty?
         run_pager
         terms.each_with_index do |term, i|
